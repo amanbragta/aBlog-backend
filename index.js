@@ -26,6 +26,9 @@ app.use(function (req, res, next) {
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/comments", commentRouter);
+app.get("/", (req, res) => {
+  res.status(200).send("Hello Vercel!");
+});
 
 app.use((error, req, res, next) => {
   res.status(error.status || 500);
@@ -36,7 +39,9 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
   connectDB();
   console.log("listening");
 });
