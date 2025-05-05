@@ -5,9 +5,16 @@ import postRouter from "./routes/post.route.js";
 import commentRouter from "./routes/comment.route.js";
 import clerkWebHook from "./routes/webhook.route.js";
 import { clerkMiddleware } from "@clerk/express";
+import mongoose from "mongoose";
 import cors from "cors";
 
 const app = express();
+
+mongoose
+  .connect(process.env.MONGO)
+  .then(() => console.log("connected to mongo"))
+  .catch((err) => console.log(err));
+
 app.set("trust proxy", 1);
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(clerkMiddleware());
@@ -42,6 +49,5 @@ app.use((error, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  connectDB();
-  console.log("listening");
+  console.log(`Server started at port: ${PORT}`);
 });
